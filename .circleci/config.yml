@@ -26,5 +26,3 @@ workflow:
     jobs:
       - build
       - push
-        - requires
-          - build
