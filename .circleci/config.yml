@@ -22,6 +22,7 @@ jobs:
             docker push ${FULL_IMAGE_NAME}
 
 workflows:
+  version: 2
   build-and-push:
     jobs:
       - build
