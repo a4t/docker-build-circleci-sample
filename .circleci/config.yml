@@ -21,7 +21,7 @@ jobs:
           command: |
             docker push ${FULL_IMAGE_NAME}
 
-workflow:
+workflows:
   - build-and-push:
     jobs:
       - build
