@@ -22,7 +22,7 @@ jobs:
             docker push ${FULL_IMAGE_NAME}
 
 workflows:
-  - build-and-push:
+  build-and-push:
     jobs:
       - build
       - push:
