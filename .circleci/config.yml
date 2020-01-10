@@ -24,6 +24,10 @@ jobs:
           key: docker-{{ .Revision }}
           paths: ~/caches/images.tar
       - run:
+          command: |
+            set +o pipefail
+            docker load -i ~/caches/images.tar | true
+      - run:
           name: Docker Hub login
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
