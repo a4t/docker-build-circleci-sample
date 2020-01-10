@@ -6,7 +6,8 @@ jobs:
       - checkout
       - run:
           name: Docker Hub login
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run:
           name: Build Image
           command: |
