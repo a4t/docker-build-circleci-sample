@@ -12,6 +12,12 @@ commands:
         name: Build Image
         command: |
           docker build -t ${FULL_IMAGE_NAME} .
+  docker_login:
+    steps:
+    - run:
+        name: Docker Hub login
+        command: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 jobs:
   push:
@@ -20,10 +26,7 @@ jobs:
     steps:
     - setup_remote_docker
     - docker_build
-    - run:
-        name: Docker Hub login
-        command: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker_login
     - run:
         name: Push Docker Image
         command: |
