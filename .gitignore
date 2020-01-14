@@ -1,1 +1,5 @@
+# common
 .env
+
+# CircleCI
+.circleci/process.yml
