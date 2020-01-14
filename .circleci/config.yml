@@ -3,7 +3,7 @@ executors:
   default:
     working_directory: ~/workspace
     docker:
-      - image: alpine:latest
+      - image: docker
 commands:
   docker_build:
     steps:
