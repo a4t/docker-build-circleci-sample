@@ -1,0 +1,67 @@
+version: 2
+jobs:
+  push:
+    working_directory: ~/workspace
+    docker:
+    - image: docker:19.03.5-git
+    steps:
+    - setup_remote_docker
+    - checkout
+    - run:
+        name: Build Image
+        command: |
+          docker build -t ${FULL_IMAGE_NAME} .
+    - run:
+        name: Docker Hub login
+        command: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - run:
+        name: Push Docker Image
+        command: |
+          docker push ${FULL_IMAGE_NAME}
+workflows:
+  version: 2
+  build-and-push:
+    jobs:
+    - push
+
+# Original config.yml file:
+# version: 2.1
+# executors:
+#   default:
+#     working_directory: ~/workspace
+#     docker:
+#       - image: docker:19.03.5-git
+# commands:
+#   docker_build:
+#     steps:
+#     - checkout
+#     - run:
+#         name: Build Image
+#         command: |
+#           docker build -t ${FULL_IMAGE_NAME} .
+#   docker_login:
+#     steps:
+#     - run:
+#         name: Docker Hub login
+#         command: |
+#           docker login -u $DOCKER_USER -p $DOCKER_PASS
+# 
+# jobs:
+#   push:
+#     executor:
+#       name: default
+#     steps:
+#     - setup_remote_docker
+#     - docker_build
+#     - docker_login
+#     - run:
+#         name: Push Docker Image
+#         command: |
+#           docker push ${FULL_IMAGE_NAME}
+# 
+# workflows:
+#   version: 2.1
+#   build-and-push:
+#     jobs:
+#     - push
