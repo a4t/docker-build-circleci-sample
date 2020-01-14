@@ -7,6 +7,7 @@ executors:
 commands:
   docker_build:
     steps:
+    - setup_remote_docker
     - checkout
     - run:
         name: Build Image
