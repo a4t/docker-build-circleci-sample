@@ -1,31 +1,34 @@
 version: 2.1
-jobs:
-  build:
-    machine: true
+executors:
+  default:
+    working_directory: ~/workspace
+    docker:
+      - image: alpine:latest
+commands:
+  image_build:
     steps:
-    - checkout
     - run:
         name: Build Image
         command: |
           docker build -t ${FULL_IMAGE_NAME} .
-    - run:
-        name: Cache Image
-        command: |
-          mkdir -p ~/caches
-          docker save ${FULL_IMAGE_NAME} -o ~/caches/images.tar
-    - save_cache:
-        key: docker-{{ .Revision }}
-        paths: ~/caches/images.tar
-  push:
-    machine: true
+
+jobs:
+  build:
+    executor:
+      name: default
     steps:
-    - restore_cache:
-        key: docker-{{ .Revision }}
-        paths: ~/caches/images.tar
-    - run:
-        command: |
-          set +o pipefail
-          docker load -i ~/caches/images.tar | true
+    - checkout
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - image_build
+
+  push:
+    executor:
+      name: default
+    steps:
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - image_build
     - run:
         name: Docker Hub login
         command: |
