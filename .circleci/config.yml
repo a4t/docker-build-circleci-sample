@@ -5,30 +5,20 @@ executors:
     docker:
       - image: alpine:latest
 commands:
-  image_build:
+  docker_build:
     steps:
+    - checkout
     - run:
         name: Build Image
         command: |
           docker build -t ${FULL_IMAGE_NAME} .
 
 jobs:
-  build:
-    executor:
-      name: default
-    steps:
-    - checkout
-    - setup_remote_docker:
-        docker_layer_caching: true
-    - image_build
-
   push:
     executor:
       name: default
     steps:
-    - setup_remote_docker:
-        docker_layer_caching: true
-    - image_build
+    - docker_build
     - run:
         name: Docker Hub login
         command: |
@@ -42,7 +32,4 @@ workflows:
   version: 2.1
   build-and-push:
     jobs:
-    - build
-    - push:
-        requires:
-        - build
+    - push
