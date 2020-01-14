@@ -7,7 +7,6 @@ executors:
 commands:
   docker_build:
     steps:
-    - setup_remote_docker
     - checkout
     - run:
         name: Build Image
@@ -20,11 +19,7 @@ jobs:
       name: default
     steps:
     - setup_remote_docker
-    - checkout
-    - run:
-        name: Build Image
-        command: |
-          docker build -t ${FULL_IMAGE_NAME} .
+    - docker_build
     - run:
         name: Docker Hub login
         command: |
