@@ -3,7 +3,7 @@ executors:
   default:
     working_directory: ~/workspace
     docker:
-      - image: docker
+      - image: docker:19.03.5-git
 commands:
   docker_build:
     steps:
