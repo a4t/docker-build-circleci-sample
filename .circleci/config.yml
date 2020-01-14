@@ -18,6 +18,7 @@ jobs:
     executor:
       name: default
     steps:
+    - setup_remote_docker
     - docker_build
     - run:
         name: Docker Hub login
